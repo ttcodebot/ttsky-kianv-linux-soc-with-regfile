@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        "KianV uLinux SoC"      # Project title
+  title:        "KianV uLinux RISC-V regfile edition"      # Project title
   author:       "Hirosh Dabui"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "A RISC-V ASIC that can boot μLinux."      # One line description of what your project does
+  description:  "A RISC-V ASIC that can boot μLinux, including a 32x32 register file macro from tnt."      # One line description of what your project does
   language:     "verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
@@ -11,7 +11,7 @@ project:
   tiles: "6x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_kianV_rv32ima_uLinux_SoC"
+  top_module:  "tt_um_kianv_rv32_regfile"
 
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.

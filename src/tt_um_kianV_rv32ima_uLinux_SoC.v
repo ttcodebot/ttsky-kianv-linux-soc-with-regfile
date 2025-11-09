@@ -1,6 +1,6 @@
 `default_nettype none
 /* verilator lint_off UNUSEDSIGNAL */
-module tt_um_kianV_rv32ima_uLinux_SoC (
+module tt_um_kianv_rv32_regfile (
     input  wire [7:0] ui_in,    // Dedicated inputs - connected to the input switches
     output wire [7:0] uo_out,   // Dedicated outputs - connected to the 7 segment display
     input  wire [7:0] uio_in,   // IOs: Bidirectional Input path
