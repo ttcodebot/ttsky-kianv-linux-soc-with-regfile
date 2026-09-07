@@ -55,6 +55,12 @@
 
   "FP_PDN_HORIZONTAL_LAYER": "met3",
 
+  "//": "6x2 routing experiment",
+  "CTS_APPLY_NDR": "none",
+  "CTS_SINK_CLUSTERING_SIZE": 25,
+  "CTS_SINK_CLUSTERING_MAX_DIAMETER": 50,
+  "PL_TIMING_DRIVEN": true,
+
   "//": "Configuration docs: https://librelane.readthedocs.io/en/latest/reference/configuration.html",
 
   "//": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
