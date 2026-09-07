@@ -37,8 +37,8 @@
     "rf_top": {
       "instances": {
         "soc_I.kianv_I.datapath_unit_I.register_file_I.tnt_regfile": {
-          "location": [3, 45.0],
-          "orientation": "E"
+          "location": [18.0, 54.4],
+          "orientation": "N"
         }
       },
       "gds": ["dir::../regfile_macro/rf_top.gds.gz"],
