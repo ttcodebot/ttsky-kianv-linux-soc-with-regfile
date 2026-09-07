@@ -3,8 +3,7 @@
 
 # defaults
 SIM ?= icarus
-#SIM_ARGS=-fst
-#SIM ?= verilator
+FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 PROJ = $(PWD)/../src
 

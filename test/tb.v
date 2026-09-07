@@ -94,10 +94,11 @@ module tb ();
       .dio ({spi_io3, spi_io2, spi_io1, spi_io0})
   );
 
-  // this part dumps the trace to a vcd file that can be viewed with GTKWave
+  // Dump the signals to a FST file. You can view it with gtkwave or surfer.
   initial begin
-    $dumpfile("tb.vcd");
+    $dumpfile("tb.fst");
     $dumpvars(0, tb);
+    #1;
   end
 
 

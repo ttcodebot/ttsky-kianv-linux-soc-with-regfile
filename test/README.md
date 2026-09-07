@@ -18,7 +18,7 @@ make clean all
 ## Viewing the waveforms
 
 ```bash
-gtkwave tb.vcd tb.gtkw
+gtkwave tb.fst tb.gtkw
 ```
 
 ## Recompilining the test firmware
