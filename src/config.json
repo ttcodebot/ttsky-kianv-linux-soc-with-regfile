@@ -37,7 +37,7 @@
     "rf_top": {
       "instances": {
         "soc_I.kianv_I.datapath_unit_I.register_file_I.tnt_regfile": {
-          "location": [3, 45.0],
+          "location": [905.0, 45.0],
           "orientation": "E"
         }
       },
@@ -54,6 +54,9 @@
   ],
 
   "FP_PDN_HORIZONTAL_LAYER": "met3",
+
+  "//": "6x2 routing experiment",
+  "GRT_ADJUSTMENT": 0.45,
 
   "//": "Configuration docs: https://librelane.readthedocs.io/en/latest/reference/configuration.html",
 
