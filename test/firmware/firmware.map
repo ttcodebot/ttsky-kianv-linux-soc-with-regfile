@@ -1,21 +1,9 @@
 Archive member included to satisfy reference by file (symbol)
 
-/home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+/tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
                               kernelboot.o (memcpy)
 
-Discarded input sections
-
- .debug_info    0x00000000      0x256 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_abbrev  0x00000000      0x107 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_loclists
-                0x00000000      0x1d6 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_aranges
-                0x00000000       0x20 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_line    0x00000000      0x31c /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_str     0x00000000      0x12c /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_line_str
-                0x00000000      0x2f4 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
- .debug_frame   0x00000000       0x20 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+There are no discarded input sections
 
 Memory Configuration
 
@@ -29,14 +17,15 @@ Linker script and memory map
 TARGET(elf32-littleriscv)
 LOAD crt0.o
 LOAD kernelboot.o
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libm.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/libgcc.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/libgcc.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libnosys.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a
-LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/libgcc.a
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libm.a
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/rv32ia_zaamo_zalrsc/ilp32/libgcc.a
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/rv32ia_zaamo_zalrsc/ilp32/libgcc.a
+START GROUP
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libgloss.a
+END GROUP
+LOAD /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/rv32ia_zaamo_zalrsc/ilp32/libgcc.a
                 0x80800000                        __stacktop = (ORIGIN (BRAM) + LENGTH (BRAM))
 
 .misc           0x20100000       0x8c
@@ -50,10 +39,10 @@ LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-
  *(.init_array)
  *(.gcc_except_table*)
 
-.text           0x2010008c      0x49c
+.text           0x2010008c      0x930
                 0x2010008c                        . = ALIGN (0x4)
  *(.text)
- .text          0x2010008c      0x1dc kernelboot.o
+ .text          0x2010008c      0x580 kernelboot.o
                 0x2010008c                uart_putc
                 0x201000b0                uart_getc
                 0x201000d4                uart_puthex_byte
@@ -62,24 +51,26 @@ LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-
                 0x20100198                timer_interrupt_handler
                 0x201001f4                SPI_transfer
                 0x20100224                test_ram_high
- .text          0x20100268       0xe8 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
-                0x20100268                memcpy
+                0x20100268                test_amo
+ .text          0x2010060c        0x0 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
  *(.text*)
- .text.startup  0x20100350      0x1b8 kernelboot.o
-                0x20100350                main
-                0x20100508                        . = ALIGN (0x4)
+ .text.startup  0x2010060c      0x258 kernelboot.o
+                0x2010060c                main
+ .text.memcpy   0x20100864      0x128 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
+                0x20100864                memcpy
+                0x2010098c                        . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
  .rodata.str1.4
-                0x20100508       0x20 kernelboot.o
-                0x20100528                        . = ALIGN (0x4)
-                0x20100528                        _etext = .
-                0x20100528                        _sidata = _etext
+                0x2010098c       0x30 kernelboot.o
+                0x201009bc                        . = ALIGN (0x4)
+                0x201009bc                        _etext = .
+                0x201009bc                        _sidata = _etext
 
-.rela.dyn       0x20100528        0x0
- .rela.text     0x20100528        0x0 crt0.o
+.rela.dyn       0x201009bc        0x0
+ .rela.text     0x201009bc        0x0 crt0.o
 
-.data           0x807f8000       0x24 load address 0x20100528
+.data           0x807f8000       0x24 load address 0x201009bc
                 0x807f8000                        . = ALIGN (0x4)
                 0x807f8000                        _sdata = .
                 0x807f8000                        _ram_start = .
@@ -89,7 +80,7 @@ LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-
  *(.data)
  .data          0x807f8000        0x0 crt0.o
  .data          0x807f8000        0x0 kernelboot.o
- .data          0x807f8000        0x0 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+ .data          0x807f8000        0x0 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
  *(.data*)
  *(.sdata)
  .sdata         0x807f8000       0x24 kernelboot.o
@@ -105,45 +96,46 @@ LOAD /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-
                 0x807f8024                        . = ALIGN (0x4)
                 0x807f8024                        _edata = .
 
-.bss            0x807f8024        0x4 load address 0x2010054c
+.bss            0x807f8024        0x8 load address 0x201009e0
                 0x807f8024                        . = ALIGN (0x4)
                 0x807f8024                        _sbss = .
  *(.bss)
  .bss           0x807f8024        0x0 crt0.o
  .bss           0x807f8024        0x0 kernelboot.o
- .bss           0x807f8024        0x0 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+ .bss           0x807f8024        0x0 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
  *(.bss*)
  *(.sbss)
- .sbss          0x807f8024        0x4 kernelboot.o
-                0x807f8024                interrupt_occurred
+ .sbss          0x807f8024        0x8 kernelboot.o
+                0x807f8028                interrupt_occurred
  *(.sbss*)
  *(COMMON)
-                0x807f8028                        . = ALIGN (0x4)
-                0x807f8028                        _ebss = .
+                0x807f802c                        . = ALIGN (0x4)
+                0x807f802c                        _ebss = .
 
-.heap           0x807f8028        0x0
-                0x807f8028                        . = ALIGN (0x4)
-                0x807f8028                        _heap_start = .
-                0x807f8028                        _end = .
+.heap           0x807f802c        0x0
+                0x807f802c                        . = ALIGN (0x4)
+                0x807f802c                        _heap_start = .
+                0x807f802c                        _end = .
 OUTPUT(firmware.elf elf32-littleriscv)
 
 .riscv.attributes
-                0x00000000       0x6a
+                0x00000000       0x5b
  .riscv.attributes
                 0x00000000       0x59 crt0.o
  .riscv.attributes
                 0x00000059       0x5b kernelboot.o
  .riscv.attributes
-                0x000000b4       0x66 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+                0x000000b4       0x34 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
 
-.comment        0x00000000       0x2f
- .comment       0x00000000       0x2f kernelboot.o
-                                 0x30 (size before relaxing)
- .comment       0x0000002f       0x30 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+.comment        0x00000000       0x33
+ .comment       0x00000000       0x33 kernelboot.o
+                                 0x34 (size before relaxing)
+ .comment       0x00000033        0x0 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)
+                                 0x34 (size before relaxing)
 
 .note.GNU-stack
                 0x00000000        0x0
  .note.GNU-stack
                 0x00000000        0x0 kernelboot.o
  .note.GNU-stack
-                0x00000000        0x0 /home/uri/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin/../lib/gcc/riscv32-esp-elf/14.2.0/../../../../riscv32-esp-elf/lib/libc.a(libc_a-memcpy.o)
+                0x00000000        0x0 /tmp/claude-1001/-workspace-ttsky25b-kianv-linux-soc-with-regfile/6032021d-a97e-49d5-af83-a01bc796379c/scratchpad/rv/bin/../lib/gcc/riscv-none-elf/15.2.0/../../../../riscv-none-elf/lib/rv32ia_zaamo_zalrsc/ilp32/libc.a(libc_a-memcpy.o)

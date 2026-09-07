@@ -27,7 +27,7 @@ volatile char *gpio_uo_en = (char *)GPIO_UO_EN,
               *gpio_uo_out = (char *)GPIO_UO_OUT,
               *gpio_ui_in = (char *)GPIO_UI_IN;
 volatile uint32_t *ram_high = (uint32_t *)RAM_HIGH;
-volatile atomic_uint interrupt_occurred = ATOMIC_VAR_INIT(0);
+volatile atomic_uint interrupt_occurred = 0;
 
 void uart_putc(char c) {
   while (!(*uart_lsr & (LSR_THRE | LSR_TEMT)))
@@ -124,6 +124,86 @@ uint8_t test_ram_high() {
   return 1;
 }
 
+/*
+ * Atomic memory operations regression test.
+ *
+ * Every AMO is exercised three ways:
+ *   - AMO_SAME: rd == rs2  (e.g. "amoadd.w a0, a0, (a1)")
+ *   - AMO_DIST: rd, rs1, rs2 all distinct
+ *   - AMO_ADDR: rd == rs1  (e.g. "amoadd.w a1, a0, (a1)")
+ *
+ * The rd == rs2 form is what Linux uses a lot (268 times in the default boot
+ * image). The core writes rd in one FSM state and reads rs2 in the next, so
+ * a register file with write-before-read (bypass) semantics returns the value
+ * just written to rd instead of the original rs2, and the memory ends up with
+ * "old OP old" instead of "old OP rs2".
+ */
+static volatile uint32_t amo_var;
+
+#define AMO_SAME(op, p, v)                                                     \
+  ({                                                                           \
+    uint32_t _v = (v);                                                         \
+    asm volatile(op " %0, %0, (%1)" : "+r"(_v) : "r"(p) : "memory");           \
+    _v;                                                                        \
+  })
+
+#define AMO_DIST(op, p, v)                                                     \
+  ({                                                                           \
+    uint32_t _r;                                                               \
+    asm volatile(op " %0, %2, (%1)" : "=&r"(_r) : "r"(p), "r"(v) : "memory");  \
+    _r;                                                                        \
+  })
+
+#define AMO_ADDR(op, p, v)                                                     \
+  ({                                                                           \
+    uint32_t _p = (uint32_t)(p);                                               \
+    asm volatile(op " %0, %1, (%0)" : "+r"(_p) : "r"(v) : "memory");           \
+    _p;                                                                        \
+  })
+
+#define AMO_CASE(id, op, init, operand, expect_mem)                            \
+  do {                                                                         \
+    uint32_t old;                                                              \
+    amo_var = (init);                                                          \
+    old = AMO_SAME(op, &amo_var, (operand));                                   \
+    if (old != (init) || amo_var != (expect_mem))                              \
+      return (id);                                                             \
+    amo_var = (init);                                                          \
+    old = AMO_DIST(op, &amo_var, (operand));                                   \
+    if (old != (init) || amo_var != (expect_mem))                              \
+      return (id) + 1;                                                         \
+    amo_var = (init);                                                          \
+    old = AMO_ADDR(op, &amo_var, (operand));                                   \
+    if (old != (init) || amo_var != (expect_mem))                              \
+      return (id) + 2;                                                         \
+  } while (0)
+
+/* Returns 0 on success, otherwise the id of the first failing case. */
+uint8_t test_amo() {
+  /* Operands are chosen so that "init OP init" != "init OP operand". */
+  AMO_CASE(0x10, "amoadd.w", 0x00001234, 0x00010000, 0x00011234);
+  AMO_CASE(0x20, "amoswap.w", 0x11111111, 0x22222222, 0x22222222);
+  AMO_CASE(0x30, "amoxor.w", 0xF0F0F0F0, 0xFF00FF00, 0x0FF00FF0);
+  AMO_CASE(0x40, "amoand.w", 0xF0F0F0F0, 0xFF00FF00, 0xF000F000);
+  AMO_CASE(0x50, "amoor.w", 0xF0F0F0F0, 0x0F000F00, 0xFFF0FFF0);
+  AMO_CASE(0x60, "amomin.w", 0x00000005, 0xFFFFFFFE, 0xFFFFFFFE);
+  AMO_CASE(0x70, "amomax.w", 0xFFFFFFFE, 0x00000005, 0x00000005);
+  AMO_CASE(0x80, "amominu.w", 0x00000005, 0x00000003, 0x00000003);
+  AMO_CASE(0x90, "amomaxu.w", 0x00000005, 0xFFFFFFF0, 0xFFFFFFF0);
+
+  /* lr.w / sc.w, with rd == rs2 on the sc.w */
+  {
+    uint32_t loaded, v = 0x00000055;
+    amo_var = 0x000000AA;
+    asm volatile("lr.w %0, (%1)" : "=&r"(loaded) : "r"(&amo_var) : "memory");
+    asm volatile("sc.w %0, %0, (%1)" : "+r"(v) : "r"(&amo_var) : "memory");
+    if (loaded != 0xAA || v != 0 || amo_var != 0x55)
+      return 0xA0;
+  }
+
+  return 0;
+}
+
 #define CS_ENABLE() spi_set_cs(1)
 #define CS_DISABLE() spi_set_cs(0)
 
@@ -140,6 +220,20 @@ int main() {
     uart_putc('E');
     uart_putc('!');
     return 1;
+  }
+
+  // Test atomic memory operations
+  uint8_t amo_result = test_amo();
+  for (char *str = "AMO "; *str; uart_putc(*str++))
+    ;
+  if (amo_result) {
+    for (char *str = "FAIL "; *str; uart_putc(*str++))
+      ;
+    uart_puthex_byte(amo_result);
+    uart_putc('\n');
+  } else {
+    for (char *str = "OK\n"; *str; uart_putc(*str++))
+      ;
   }
 
   // Test GPIO (only if test_sel is set)

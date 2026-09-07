@@ -3,7 +3,7 @@ from cocotb.clock import Clock
 from cocotb.types import LogicArray
 from cocotb.triggers import ClockCycles
 from cocotbext.uart import UartSource, UartSink
-from cocotb.triggers import RisingEdge, FallingEdge
+from cocotb.triggers import RisingEdge, FallingEdge, with_timeout
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -71,8 +71,8 @@ async def test_uart(dut):
 
     await ClockCycles(dut.clk, 20000 * 6)
 
-    expected_str = b"Hello UART\n"
-    data = uart_sink.read_nowait(len(expected_str))
+    expected_str = b"AMO OK\nHello UART\n"
+    data = uart_sink.read_nowait()
     dut._log.info(f"UART Data: {data}")
     assert data == expected_str
 
@@ -121,7 +121,7 @@ async def test_gpio(dut):
     dut.rst_n.value = 1
 
     # Wait for the test firmware to start
-    await RisingEdge(dut.uo_out7)
+    await with_timeout(RisingEdge(dut.uo_out7), 5, "ms")
     for expected_val in [0x80, 0x00, 0x85, 0x12, 0x94, 0x17]:
         dut._log.info(
             f"GPIO Data: {dut.uo_out.value.to_unsigned():#X} (expected {expected_val:#X})"
