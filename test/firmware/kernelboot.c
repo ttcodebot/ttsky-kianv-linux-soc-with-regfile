@@ -133,10 +133,10 @@ uint8_t test_ram_high() {
  *   - AMO_ADDR: rd == rs1  (e.g. "amoadd.w a1, a0, (a1)")
  *
  * The rd == rs2 form is what Linux uses a lot (268 times in the default boot
- * image). The core writes rd in one FSM state and reads rs2 in the next, so
- * a register file with write-before-read (bypass) semantics returns the value
- * just written to rd instead of the original rs2, and the memory ends up with
- * "old OP old" instead of "old OP rs2".
+ * image). The core used to write rd in one FSM state and read rs2 in the next,
+ * so the register file (registered read ports with write bypass) returned the
+ * value just written to rd instead of the original rs2, and memory ended up
+ * with "old OP old" instead of "old OP rs2".
  */
 static volatile uint32_t amo_var;
 

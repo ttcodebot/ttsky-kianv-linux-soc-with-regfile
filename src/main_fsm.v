@@ -114,8 +114,7 @@ module main_fsm (
   // rd = tmp
   // -> S18 (mem addr)
   // -> S24 (amo load)
-  // -> S25 (wb)
-  // -> S26 (alu exec amo)
+  // -> S25 (wb rd, alu exec amo)
   // -> S27 (mem addr)
   // -> S28 (mem write)
   // -> s29 -> s0
@@ -126,7 +125,7 @@ module main_fsm (
                   S6 = 6, S7 = 7, S8 = 8, S9 = 9, S10 = 10, S11 = 11,
                   S12 = 12, S13 = 13, S14 = 14, S15 = 15, S16 = 16, S17 = 17,
                   S18 = 18, S19 = 19, S20 = 20, S21 = 21, S22 = 22, S23 = 23,
-                  S24 = 24, S25 = 25, S26 = 26, S27 = 27, S28 = 28, S29 = 29,
+                  S24 = 24, S25 = 25, S27 = 27, S28 = 28, S29 = 29,
                   S30 = 30, S31 = 31, S32 = 32, S33 = 33, S34 = 34, S35 = 35, S36 = 36,
                   S37 = 37, S38 = 38, S39 = 39, S40 = 40, S41 = 41, S42 = 42, S43 = 43,
                   S44 = 44, S45 = 45, S46 = 46, S47 = 47, S48 = 48, S49 = 49, S_LAST = 50; // fixme
@@ -298,9 +297,7 @@ module main_fsm (
 
       S24:  // amo load
       next_state = mem_ready ? S25 : S24;
-      S25:  // alu wb
-      next_state = S26;
-      S26:  // alu amo exec
+      S25:  // amo wb + alu exec
       next_state = S27;
       S27: next_state = unaligned_access_store ? S42 : S28;  // alu addr amo
       S28:  // mem write
@@ -596,19 +593,16 @@ module main_fsm (
         amo_temp_write_operation = 1'b1;
       end
       S25: begin
-        // amo wb
-        ALUOp = `ALU_OP_ADD;
-        ALUSrcA = `SRCA_AMO_TEMP_DATA;
-        ALUSrcB = `SRCB_CONST_0;
+        // amo wb + alu exec amo
+        // rd <- Data, amo_temp <- amo_temp op rs2 (swap: 0 + rs2)
+        // Both in one state: the register file read ports are registered and
+        // a read of the register being written returns the new value, so with
+        // rd == rs2 a later state would see Data instead of rs2.
         ResultSrc = `RESULT_DATA;
         RegWrite = 1'b1;
-      end
-      S26: begin
-        // alu exec amo
         ALUOp = `ALU_OP_AMO;
         ALUSrcA = is_amoswap_w ? `SRCA_CONST_0 : `SRCA_AMO_TEMP_DATA;
         ALUSrcB = `SRCB_RD2_BUF;
-        ResultSrc = `RESULT_ALURESULT;
         select_ALUResult = 1'b1;
         amo_temp_write_operation = 1'b1;
       end
