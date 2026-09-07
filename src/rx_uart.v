@@ -75,6 +75,7 @@ module rx_uart (
 
     if (!resetn) begin
       state <= 0;
+      return_state <= 0;
       ready <= 1'b0;
       error <= 1'b0;
       wait_states <= 1;
