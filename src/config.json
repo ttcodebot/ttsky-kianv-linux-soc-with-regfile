@@ -37,7 +37,7 @@
     "rf_top": {
       "instances": {
         "soc_I.kianv_I.datapath_unit_I.register_file_I.tnt_regfile": {
-          "location": [3, 45.0],
+          "location": [905.0, 45.0],
           "orientation": "E"
         }
       },
