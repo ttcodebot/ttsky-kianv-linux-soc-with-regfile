@@ -1,0 +1,211 @@
+name: 'Tiny Tapeout GDS Action (local copy with PDK version pinning)'
+description: 'This action builds a GDS file from your Tiny Tapeout project'
+branding:
+  color: purple
+  icon: layers
+
+inputs:
+  tools-repo:
+    description: 'Override tt-support-tools repository'
+    default: 'TinyTapeout/tt-support-tools'
+    required: false
+    type: string
+  tools-ref:
+    description: 'Override tt-support-tools branch/tag/commit'
+    default: 'main'
+    required: false
+    type: string
+  pdk:
+    description: 'PDK used for hardening the chip'
+    required: true
+    type: choice
+    options:
+      - 'gf180mcuD'
+      - 'ihp-sg13g2'
+      - 'sky130A'
+  librelane-version:
+    description: 'LibreLane version to install'
+    default: '3.0.5'
+    required: false
+    type: string
+  pdk-version:
+    description: 'open_pdks commit to use instead of the one pinned by the LibreLane release (empty = LibreLane default)'
+    default: ''
+    required: false
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up environment variables
+      shell: bash
+      run: |
+        # Defaults:
+        PDK="${{ inputs.pdk }}"
+        PDK_ROOT=/home/runner/pdk
+        TT_ARGS=""
+
+        # Backward compatibility with old 'pdk' values
+        if [ "$PDK" == "sky130" ]; then
+          PDK="sky130A"
+        elif [ "$PDK" == "ihp" ]; then
+          PDK="ihp-sg13g2"
+        fi
+
+        # PDK-specific overrides
+        if [ "$PDK" == "gf180mcuD" ]; then
+          TT_ARGS="--gf"
+        elif [ "$PDK" == "ihp-sg13g2" ]; then
+          TT_ARGS="--ihp"
+        fi
+
+        cat << __EOF >> $GITHUB_ENV
+        PDK=$PDK
+        TT_ARGS=$TT_ARGS
+        __EOF
+
+    # Install packages for 'Render PNG from GDS' step and ghdl to process VHDL files:
+    - name: Install prerequisites
+      uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9 # v1.6.3
+      with:
+        packages: librsvg2-bin pngquant ghdl-llvm # librsvg2-bin for rsvg-convert; pngquant for heavy PNG compression.
+        version: tinytapeout_gds_action # I think naming a version builds a reusable packages cache for that name.
+
+    - name: Checkout tt-support-tools repo
+      uses: actions/checkout@v6
+      with:
+        repository: "${{ inputs.tools-repo }}"
+        ref: "${{ inputs.tools-ref }}"
+        path: tt
+
+    - name: Setup python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+        cache: 'pip' # caching pip dependencies
+
+    - name: Install tt-support-tools dependencies
+      shell: bash
+      run: pip install -r tt/requirements.txt
+
+    - name: Fetch verilog and build config
+      shell: bash
+      run: ./tt/tt_tool.py --create-user-config $TT_ARGS
+
+    - name: Install LibreLane
+      shell: bash
+      run: pip install librelane==${{ inputs.librelane-version }}
+
+    - name: Pin PDK version
+      if: ${{ inputs.pdk-version != '' }}
+      shell: bash
+      run: |
+        # Enable the requested open_pdks build with ciel and make LibreLane use it as-is
+        # (--manual-pdk) instead of fetching the version pinned by the LibreLane release.
+        export PDK_ROOT=/home/runner/pdk
+        ciel enable --pdk-family sky130 --pdk-root "$PDK_ROOT" -l default -l sky130_fd_sc_hd "${{ inputs.pdk-version }}"
+        echo "PDK_ROOT=$PDK_ROOT" >> $GITHUB_ENV
+        sed -i 's/--run-tag wokwi/--manual-pdk --run-tag wokwi/' tt/project.py
+        grep -n "manual-pdk" tt/project.py
+
+    - name: Make GDS with LibreLane
+      shell: bash
+      run: ./tt/tt_tool.py --harden $TT_ARGS
+
+    - name: Show build files (for debugging)
+      shell: bash
+      run: find runs/wokwi/
+
+    - name: Linter output
+      if: always()
+      shell: bash
+      run: |
+        LINTER_LOG=(runs/wokwi/*-verilator-lint/verilator-lint.log)
+        LINTER_LOG=${LINTER_LOG[0]}
+
+        echo "DEBUG LINTER_LOG *$LINTER_LOG*"
+        cat $LINTER_LOG
+        echo "END DEBUG"
+
+        if [ -s "$LINTER_LOG" ]; then
+          set +e
+          count_error=$(egrep -i "^%Error"   $LINTER_LOG | wc -l)
+          count_warn=$( egrep -i "^%Warning" $LINTER_LOG | wc -l)
+          count_other=$(egrep -i "^%"        $LINTER_LOG | egrep -v "%(Warning|Error)" | wc -l)
+          set -e
+
+          open=""
+          summary=""
+          icon=":green_circle:"
+          if [ $count_other -gt 0 ]; then
+            summary="$count_other message(s)"
+            icon=":orange_circle:"
+          fi
+          if [ $count_warn -gt 0 ]; then
+            summary="$count_warn warning(s)"
+            icon=":orange_circle:"
+          fi
+          if [ $count_error -gt 0 ]; then
+            summary="$count_error error(s)"
+            icon=":red_circle:"
+            open="open"
+          fi
+          if [ -n "$summary" ]; then
+            summary="[$summary]"
+          fi
+
+          echo "<details ${open}>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary><h1>Linter output&nbsp;&nbsp;<h4>${summary} ${icon}</h4></h1></summary>" >> $GITHUB_STEP_SUMMARY
+          echo "<pre>" >> $GITHUB_STEP_SUMMARY
+          # Print each line of the file preceeded by four spaces:
+          sed 's/^/    /' < $LINTER_LOG >> $GITHUB_STEP_SUMMARY
+          echo "</pre>" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: Yosys warnings
+      shell: bash
+      run: ./tt/tt_tool.py --print-warnings $TT_ARGS >> $GITHUB_STEP_SUMMARY
+
+    - name: Routing summary
+      shell: bash
+      run: ./tt/tt_tool.py --print-stats $TT_ARGS >> $GITHUB_STEP_SUMMARY
+
+    - name: Cell usage summary
+      shell: bash
+      run: ./tt/tt_tool.py --print-cell-category $TT_ARGS >> $GITHUB_STEP_SUMMARY
+
+    - name: Publish build logs
+      if: success() || failure()
+      uses: actions/upload-artifact@v7
+      with:
+        name: GDS_logs
+        path: |
+          src/*
+          runs/wokwi/*
+
+    - name: Prepare tt_submission artifact
+      shell: bash
+      run: ./tt/tt_tool.py --create-tt-submission $TT_ARGS
+
+    - name: Publish tt_submission artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: tt_submission
+        path: |
+          src/*
+          docs/*
+          tt_submission/*
+          info.yaml
+          LICENSE
+
+    # Create and store PNG...
+    - name: Render PNG from GDS
+      shell: bash
+      run: './tt/tt_tool.py --create-png $TT_ARGS 2>&1 || echo "WARNING: Failed to render PNG preview from GDS; error $?"'
+
+    - name: Upload gds_render (png) artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: gds_render
+        path: 'gds_render.png'

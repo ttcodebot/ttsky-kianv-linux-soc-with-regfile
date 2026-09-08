@@ -14,9 +14,10 @@ jobs:
           submodules: recursive
 
       - name: Build GDS
-        uses: TinyTapeout/tt-gds-action@ttsky26c
+        uses: ./.github/actions/tt-gds
         with:
           pdk: sky130A
+          pdk-version: '0fe599b2afb6708d281543108caf8310912f54af'
 
   precheck:
     needs: gds
