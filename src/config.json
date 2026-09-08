@@ -55,6 +55,9 @@
 
   "FP_PDN_HORIZONTAL_LAYER": "met3",
 
+  "//": "6x2 routing experiment",
+  "PL_ROUTABILITY_DRIVEN": false,
+
   "//": "Configuration docs: https://librelane.readthedocs.io/en/latest/reference/configuration.html",
 
   "//": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
